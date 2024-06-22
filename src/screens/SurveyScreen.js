@@ -2,19 +2,28 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+/* const maduro = require('./Candidatos/nicolas-maduro.png');
+const gonzalez = require('./Candidatos/Edmundo_Gonzalez_Urrutia.png');
+const ecarri = require('./Candidatos/AntonioEcarri.png');
+const rauseo = require('./Candidatos/BenjaminRauseo.png');
+const marquez = require('./Candidatos/Enrique_Marquez.png');
+const bertucci = require('./Candidatos/JavierBertucci.png'); */
+
+/* import maduro from'./Candidatos/nicolas-maduro.png';
+import gonzalez from'./Candidatos/Edmundo_Gonzalez_Urrutia.png';
+import ecarri from'./Candidatos/AntonioEcarri.png';
+import rauseo from'./Candidatos/BenjaminRauseo.png';
+import marquez from'./Candidatos/Enrique_Marquez.png';
+import bertucci from'./Candidatos/JavierBertucci.png'; */
+
+import candidates from './candidates.json' ;
 
 const SurveyScreen = ({ navigation }) => {
     const [serviceRating, setServiceRating] = useState('');
-    const [productQuality, setProductQuality] = useState('');
 
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
-
-    const handleProductQualityChange = (value) => {
-        setProductQuality(value);
-    }
-
     const submitSurvey = () => {
         axios.post('https://tu-api.com/survey', { response })
             .then(() => {
@@ -33,9 +42,9 @@ const SurveyScreen = ({ navigation }) => {
             </View>
             <View style={styles.form}>
                 <View style={styles.formGroup}>
-                    <Text style={styles.label}>¿Cómo calificarías nuestro servicio?</Text>
+                    <Text style={styles.label}>¿Cuál es tu candidato favorito?</Text>
                     <View style={styles.optionsContainer}>
-                        {['excellent', 'good', 'average', 'poor'].map((value) => (
+                        {candidates.map(({ value, image }) => (
                             <TouchableOpacity
                                 key={value}
                                 style={[
@@ -44,24 +53,7 @@ const SurveyScreen = ({ navigation }) => {
                                 ]}
                                 onPress={() => handleServiceRatingChange(value)}
                             >
-                                <Image source={{ uri: 'https://via.placeholder.com/48' }} style={styles.image} />
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-                </View>
-                <View style={styles.formGroup}>
-                    <Text style={styles.label}>¿Cómo calificarías la calidad de nuestros productos?</Text>
-                    <View style={styles.optionsContainer}>
-                        {['excellent', 'good', 'average', 'poor'].map((value) => (
-                            <TouchableOpacity
-                                key={value}
-                                style={[
-                                    styles.option,
-                                    productQuality === value && styles.selectedOption
-                                ]}
-                                onPress={() => handleProductQualityChange(value)}
-                            >
-                                <Image source={{ uri: 'https://via.placeholder.com/48' }} style={styles.image} />
+                                <Image source={{ uri: image }} style={styles.image} />
                             </TouchableOpacity>
                         ))}
                     </View>
@@ -108,25 +100,25 @@ const styles = StyleSheet.create({
     },
     optionsContainer: {
         marginTop: 8,
-        flexDirection: 'row',
+        flexFlow: 'row wrap',
         justifyContent: 'space-between',
+        gap: 16
     },
     option: {
-        flex: 1,
+        flex: '1 1 30%',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 16,
         borderWidth: 1,
         borderColor: '#A9AAAE',
         borderRadius: 8,
-        marginHorizontal: 4,
     },
     selectedOption: {
         borderColor: '#3E7DA0',
     },
     image: {
-        width: 48,
-        height: 48,
+        width: 84,
+        height: 84,
+        borderRadius: 8,
     },
     button: {
         marginTop: 16,
