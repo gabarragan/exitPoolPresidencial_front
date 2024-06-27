@@ -1,9 +1,26 @@
-import axios from 'axios';
+import sendHttpRequest from './sendHttpRequest';
 
-const api = axios.create({
-    baseURL: 'https://tu-api.com',
-    timeout: 1000,
-    headers: { 'X-Custom-Header': 'foobar' }
-});
+export default class API {
 
-export default api;
+    constructor({ baseUrl = process.env.EXPO_PUBLIC_API_URL }) {
+        this.baseUrl = baseUrl;
+    }
+
+    get({ url }) {
+        return sendHttpRequest({ url: `${this.baseUrl}${url}`, method: 'GET' });
+    }
+
+    post = ({ url, data }) => {
+        return sendHttpRequest({ url: `${this.baseUrl}${url}`, method: 'POST', data });
+    }
+
+    put = ({ url, data }) => {
+        return sendHttpRequest({ url: `${this.baseUrl}${url}`, method: 'PUT', data });
+    }
+
+    delete = ({ url }) => {
+        return sendHttpRequest({ url: `${this.baseUrl}${url}`, method: 'DELETE' });
+    }
+
+}
+

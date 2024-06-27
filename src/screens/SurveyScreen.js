@@ -1,44 +1,39 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-/* const maduro = require('./Candidatos/nicolas-maduro.png');
-const gonzalez = require('./Candidatos/Edmundo_Gonzalez_Urrutia.png');
-const ecarri = require('./Candidatos/AntonioEcarri.png');
-const rauseo = require('./Candidatos/BenjaminRauseo.png');
-const marquez = require('./Candidatos/Enrique_Marquez.png');
-const bertucci = require('./Candidatos/JavierBertucci.png'); */
-
-/* import maduro from'./Candidatos/nicolas-maduro.png';
-import gonzalez from'./Candidatos/Edmundo_Gonzalez_Urrutia.png';
-import ecarri from'./Candidatos/AntonioEcarri.png';
-import rauseo from'./Candidatos/BenjaminRauseo.png';
-import marquez from'./Candidatos/Enrique_Marquez.png';
-import bertucci from'./Candidatos/JavierBertucci.png'; */
-
-import candidates from './candidates.json' ;
+import API from '../utils/api';
 
 const SurveyScreen = ({ navigation }) => {
+    const api = new API({});
     const [serviceRating, setServiceRating] = useState('');
-
+    const [listStateVotingCenter, setListStateVotingCenter] = useState({});
+    const [candidates, setCandidates] = useState([]);
+    const [states, setStates] = useState({});
+    const [selectedState, setSelectedState] = useState('');
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
+    api.get({ url: '/listStateVotingCenter' }).then((response) => {
+        setListStateVotingCenter(response);
+    });
+    api.get({ url: '/candidates' }).then((response) => {
+        setCandidates(response);
+    });
+
     const submitSurvey = () => {
-        axios.post('https://tu-api.com/survey', { response })
+        /* axios.post('https://tu-api.com/survey', { response })
             .then(() => {
                 navigation.navigate('Results');
             })
             .catch(error => {
                 console.error(error);
-            });
+            }); */
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>Encuesta de Satisfacción</Text>
-                <Text style={styles.subtitle}>Ayúdanos a mejorar compartiendo tu opinión.</Text>
+                <Text style={styles.title}>Encuesta de Elecciones</Text>
+                <Text style={styles.subtitle}>Ayúdanos compartiendo tu opinión.</Text>
             </View>
             <View style={styles.form}>
                 <View style={styles.formGroup}>

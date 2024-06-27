@@ -10,7 +10,11 @@ const Stack = createStackNavigator();
 const AppNavigator = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator 
+            screenOptions={ { 
+                headerShown: false,
+            }}
+            initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Survey" component={SurveyScreen} />
                 <Stack.Screen name="Results" component={ResultsScreen} />
