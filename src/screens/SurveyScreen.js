@@ -1,36 +1,87 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
 import API from '../utils/api';
+import Candidates from './candidates.json';
 
 const SurveyScreen = ({ navigation }) => {
     const api = new API({});
-    const [serviceRating, setServiceRating] = useState('');
-    const [listStateVotingCenter, setListStateVotingCenter] = useState({});
+    const [serviceRating, setServiceRating] = useState(0);
+    const [listState, setListState] = useState([]);
+    const [listVotingCenter, setListVotingCenter] = useState([]);
     const [candidates, setCandidates] = useState([]);
-    const [states, setStates] = useState({});
-    const [selectedState, setSelectedState] = useState('');
+    const [selectedState, setSelectedState] = useState('0');
+    const [selectedVotingCenter, setSelectedVotingCenter] = useState('0');
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
-    api.get({ url: '/listStateVotingCenter' }).then((response) => {
-        setListStateVotingCenter(response);
-    });
-    api.get({ url: '/candidates' }).then((response) => {
-        setCandidates(response);
-    });
+
+    useEffect(() => {
+        api.get({ url: '/listStateVotingCenter' }).then((response) => {
+            const items = response.data;
+            const filteredItems = Object.values(
+                items.reduce((acc, item) => {
+                    if (!acc[item.idState]) {
+                        acc[item.idState] = item;
+                    }
+                    return acc;
+                }, {})
+            );
+            console.log(filteredItems);
+            setListState(filteredItems);
+            setListVotingCenter(items);
+        });
+        api.get({ url: '/candidates' }).then((response) => {
+            const items = response.data;
+            setCandidates(items.map((item) => ({
+                ...item,
+                image: Candidates.filter((candidate) => candidate.value === item.name)[0].image,
+            })));
+        });
+    }, []);
 
     const submitSurvey = () => {
-        /* axios.post('https://tu-api.com/survey', { response })
-            .then(() => {
-                navigation.navigate('Results');
-            })
-            .catch(error => {
-                console.error(error);
-            }); */
+        api.post({ url: '/registreVote', data: {
+            "idCandidate": serviceRating,
+            "nroVote": "1",
+            "idState": selectedState,
+            "idVotingCenter": selectedVotingCenter
+          } }).then((response) => {
+            
+        })
     };
 
     return (
         <View style={styles.container}>
+            <View style={styles.header}>
+                <View style={styles.selectContainer}>
+                    <Picker
+                        selectedValue={selectedState}
+                        style={[
+                            styles.picker,
+                            selectedState !== 0 && styles.selectedOption
+                        ]}
+                        onValueChange={(itemValue) => setSelectedState(itemValue)}
+                    >
+                        <Picker.Item label="Estado" value="0" />
+                        {listState.map(({ idState, state_name }) => (
+                            <Picker.Item key={idState} label={state_name} value={idState} />
+                        ))}
+                    </Picker>
+                    <Picker
+                        selectedValue={selectedVotingCenter}
+                        style={[
+                            styles.picker,
+                            selectedVotingCenter !== 0 && styles.selectedOption
+                        ]}
+                        onValueChange={(itemValue) => setSelectedVotingCenter(itemValue)}
+                    >
+                        <Picker.Item label="Centro de votación" value="0" />
+                        {listVotingCenter.map(({ idVotingCenter, voting_center_name }) => (
+                            <Picker.Item key={idVotingCenter} label={voting_center_name} value={idVotingCenter} />
+                        ))}
+                    </Picker>
+                </View>
+            </View>
             <View style={styles.header}>
                 <Text style={styles.title}>Encuesta de Elecciones</Text>
                 <Text style={styles.subtitle}>Ayúdanos compartiendo tu opinión.</Text>
@@ -39,18 +90,30 @@ const SurveyScreen = ({ navigation }) => {
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>¿Cuál es tu candidato favorito?</Text>
                     <View style={styles.optionsContainer}>
-                        {candidates.map(({ value, image }) => (
+                        {candidates.map(({ id, name, image }) => (
                             <TouchableOpacity
-                                key={value}
+                                key={id}
                                 style={[
                                     styles.option,
-                                    serviceRating === value && styles.selectedOption
+                                    serviceRating === id && styles.selectedOption
                                 ]}
-                                onPress={() => handleServiceRatingChange(value)}
+                                onPress={() => handleServiceRatingChange(id)}
                             >
                                 <Image source={{ uri: image }} style={styles.image} />
+                                <Text style={styles.optionText}>{name}</Text>
                             </TouchableOpacity>
                         ))}
+                        <TouchableOpacity
+                            key={0}
+                            style={[
+                                styles.option,
+                                serviceRating === 0 && styles.selectedOption
+                            ]}
+                            onPress={() => handleServiceRatingChange(0)}
+                        >
+                            <Image source={{ uri: '' }} style={styles.image} />
+                            <Text style={styles.optionText}>{'Anonimo'}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <TouchableOpacity style={styles.button} onPress={submitSurvey}>
@@ -69,6 +132,16 @@ const styles = StyleSheet.create({
         paddingVertical: 24,
         maxWidth: 400,
         alignSelf: 'center',
+    },
+    selectContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    picker: {
+        height: 50,
+        width: 150,
+        borderRadius: 8,
     },
     header: {
         marginBottom: 16,
@@ -101,11 +174,15 @@ const styles = StyleSheet.create({
     },
     option: {
         flex: '1 1 30%',
+        maxWidth: '30%',
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: '#A9AAAE',
         borderRadius: 8,
+    },
+    optionText: {
+        color: '#949599'
     },
     selectedOption: {
         borderColor: '#3E7DA0',
