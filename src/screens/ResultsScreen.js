@@ -1,13 +1,14 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { VictoryBar, VictoryChart } from 'victory-native';
+import API from '../utils/api';
+import BarChartExample from '../components/BarCharExample';
 
 const ResultsScreen = () => {
     const [data, setData] = useState([]);
+    const api = new API({});
 
     useEffect(() => {
-        axios.get('https://tu-api.com/results')
+        api.get('/TotalVotes')
             .then(response => {
                 setData(response.data);
             })
@@ -19,9 +20,8 @@ const ResultsScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Results</Text>
-            <VictoryChart>
-                <VictoryBar data={data} x="option" y="votes" />
-            </VictoryChart>
+            <BarChartExample
+            />
         </View>
     );
 };

@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
     option: {
         flex: '1 1 30%',
         maxWidth: '30%',
+        minWidth: '30%',
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
