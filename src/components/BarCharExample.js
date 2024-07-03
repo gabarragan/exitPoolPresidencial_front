@@ -1,21 +1,45 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { BarChart, Grid } from 'react-native-svg-charts';
-import { Text } from 'react-native-svg';
+import { View, Dimensions, StyleSheet } from 'react-native';
+import { BarChart } from 'react-native-chart-kit';
 
 const BarChartExample = () => {
-  const data = [14, 80, 100, 55, 66, 77, 90];
+  const data = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+      },
+    ],
+  };
+
+  const chartConfig = {
+    backgroundColor: '#e26a00',
+    backgroundGradientFrom: '#fb8c00',
+    backgroundGradientTo: '#ffa726',
+    decimalPlaces: 2,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    style: {
+      borderRadius: 16,
+    },
+    propsForDots: {
+      r: '6',
+      strokeWidth: '2',
+      stroke: '#ffa726',
+    },
+  };
 
   return (
     <View style={styles.container}>
       <BarChart
         style={styles.chart}
         data={data}
-        svg={{ fill: '#3E7DA0' }}
-        contentInset={{ top: 30, bottom: 30 }}
-      >
-        <Grid />
-      </BarChart>
+        width={Dimensions.get('window').width - 16}
+        height={220}
+        yAxisLabel="$"
+        chartConfig={chartConfig}
+        verticalLabelRotation={30}
+      />
     </View>
   );
 };
@@ -28,8 +52,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   chart: {
-    height: 200,
-    width: 300,
+    marginVertical: 8,
+    borderRadius: 16,
   },
 });
 

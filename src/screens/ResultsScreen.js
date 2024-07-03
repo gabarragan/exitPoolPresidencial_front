@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import API from '../utils/api';
+import { SafeAreaView } from 'react-native';
+
 import BarChartExample from '../components/BarCharExample';
 
 const ResultsScreen = () => {
@@ -10,7 +12,8 @@ const ResultsScreen = () => {
     useEffect(() => {
         api.get('/TotalVotes')
             .then(response => {
-                setData(response.data);
+                //setData(response.data);
+                console.log(response.data);
             })
             .catch(error => {
                 console.error(error);
@@ -18,11 +21,10 @@ const ResultsScreen = () => {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Results</Text>
-            <BarChartExample
-            />
-        </View>
+            <BarChartExample />
+        </SafeAreaView>
     );
 };
 
