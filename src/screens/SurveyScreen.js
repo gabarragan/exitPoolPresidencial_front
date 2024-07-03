@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
 import API from '../utils/api';
-import Candidates from './candidates.json';
 
 const SurveyScreen = ({ navigation }) => {
     const api = new API({});
@@ -26,27 +25,25 @@ const SurveyScreen = ({ navigation }) => {
                     return acc;
                 }, {})
             );
-            console.log(filteredItems);
             setListState(filteredItems);
             setListVotingCenter(items);
         });
         api.get({ url: '/candidates' }).then((response) => {
-            const items = response.data;
-            setCandidates(items.map((item) => ({
-                ...item,
-                image: Candidates.filter((candidate) => candidate.value === item.name)[0].image,
-            })));
+            setCandidates(response.data);
         });
     }, []);
 
     const submitSurvey = () => {
-        api.post({ url: '/registreVote', data: {
-            "idCandidate": serviceRating,
-            "nroVote": "1",
-            "idState": selectedState,
-            "idVotingCenter": selectedVotingCenter
-          } }).then((response) => {
-            
+        //TODO pop up de confirmacion
+        api.post({
+            url: '/registreVote', data: {
+                "idCandidate": serviceRating,
+                "nroVote": "1",
+                "idState": selectedState,
+                "idVotingCenter": selectedVotingCenter
+            }
+        }).then((response) => {
+
         })
     };
 
@@ -90,7 +87,7 @@ const SurveyScreen = ({ navigation }) => {
                 <View style={styles.formGroup}>
                     <Text style={styles.label}>¿Cuál es tu candidato favorito?</Text>
                     <View style={styles.optionsContainer}>
-                        {candidates.map(({ id, name, image }) => (
+                        {candidates.map(({ id, name, image64 }) => (
                             <TouchableOpacity
                                 key={id}
                                 style={[
@@ -99,7 +96,7 @@ const SurveyScreen = ({ navigation }) => {
                                 ]}
                                 onPress={() => handleServiceRatingChange(id)}
                             >
-                                <Image source={{ uri: image }} style={styles.image} />
+                                <Image source={{ uri: `data:image/png;base64,${image64}` }} style={styles.image} />
                                 <Text style={styles.optionText}>{name}</Text>
                             </TouchableOpacity>
                         ))}

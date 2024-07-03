@@ -6,16 +6,34 @@ import { SafeAreaView } from 'react-native';
 import BarChartExample from '../components/BarCharExample';
 
 const ResultsScreen = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState( {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [
+          {
+            data: [-50, -20, -2, 86, 71, 100],
+            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`
+          },
+          {
+            data: [20, 10, 4, 56, 87, 90],
+            color: (opacity = 1) => `rgba(0, 255, 255, ${opacity})`
+          },
+          {
+            data: [30, 90, 67, 54, 10, 2]
+          }
+        ],
+        legend: ["Rainy Days", "Sunny Days", "Snowy Days"] 
+      });
     const api = new API({});
 
     useEffect(() => {
-        api.get('/TotalVotes')
+        api.get({ url: '/TotalVotes' })
             .then(response => {
-                //setData(response.data);
-                console.log(response.data);
-            })
-            .catch(error => {
+                const labels = response.data.map((item) => item.name);
+                const data = response.data.map((item) => item.percentage);
+                console.log(response.data, { labels, datasets: [{ data }] });
+                setData({ labels, datasets: [{ data }] });
+            }).catch(error => {
+                setData({ labels: [], datasets: [{ data: [] }] });
                 console.error(error);
             });
     }, []);
@@ -23,7 +41,7 @@ const ResultsScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Results</Text>
-            <BarChartExample />
+            <BarChartExample data={data} />
         </SafeAreaView>
     );
 };

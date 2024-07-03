@@ -12,8 +12,9 @@ const AppNavigator = () => {
         <NavigationContainer>
             <Stack.Navigator 
             screenOptions={ { 
+                headerShown: false,
             }}
-            initialRouteName="Results">
+            initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Survey" component={SurveyScreen} />
                 <Stack.Screen name="Results" component={ResultsScreen} />
