@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
 import API from '../utils/api';
+import Modal from '../components/Modal';
 
 const SurveyScreen = ({ navigation }) => {
     const api = new API({});
@@ -10,6 +11,7 @@ const SurveyScreen = ({ navigation }) => {
     const [candidates, setCandidates] = useState([]);
     const [selectedState, setSelectedState] = useState('0');
     const [selectedVotingCenter, setSelectedVotingCenter] = useState('0');
+    const [open, setOpen] = useState(false);
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
@@ -33,18 +35,25 @@ const SurveyScreen = ({ navigation }) => {
         });
     }, []);
 
-    const submitSurvey = () => {
-        //TODO pop up de confirmacion
-        api.post({
+    const onConfirm = async () => {
+        const response = await api.post({
             url: '/registreVote', data: {
                 "idCandidate": serviceRating,
                 "nroVote": "1",
                 "idState": selectedState,
                 "idVotingCenter": selectedVotingCenter
             }
-        }).then((response) => {
+        });
+        setOpen(false);
+    }
 
-        })
+    const onCancel = async () => {
+        setOpen(false);
+    }
+
+    const submitSurvey = () => {
+        //TODO: Validaciones
+        setOpen(true);
     };
 
     return (
@@ -117,6 +126,12 @@ const SurveyScreen = ({ navigation }) => {
                     <Text style={styles.buttonText}>Enviar</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+                open={open}
+                title={''}
+                me
+                onConfirm={onConfirm}
+                onCancel={onCancel} />
         </View>
     );
 };
