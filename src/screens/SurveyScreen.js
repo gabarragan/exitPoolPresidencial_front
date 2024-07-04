@@ -101,35 +101,28 @@ const SurveyScreen = ({ navigation }) => {
                                 key={id}
                                 style={[
                                     styles.option,
-                                    serviceRating === id && styles.selectedOption
+                                    serviceRating === id && styles.selectedOptionCandidate
                                 ]}
-                                onPress={() => handleServiceRatingChange(id)}
+                                onPress={() => handleServiceRatingChange(id) }
+                                
                             >
+                                
                                 <Image source={{ uri: `data:image/png;base64,${image64}` }} style={styles.image} />
                                 <Text style={styles.optionText}>{name}</Text>
                             </TouchableOpacity>
                         ))}
-                        <TouchableOpacity
-                            key={0}
-                            style={[
-                                styles.option,
-                                serviceRating === 0 && styles.selectedOption
-                            ]}
-                            onPress={() => handleServiceRatingChange(0)}
-                        >
-                            <Image source={{ uri: '' }} style={styles.image} />
-                            <Text style={styles.optionText}>{'Anonimo'}</Text>
-                        </TouchableOpacity>
+                        
                     </View>
                 </View>
                 <TouchableOpacity style={styles.button} onPress={submitSurvey}>
                     <Text style={styles.buttonText}>Enviar</Text>
                 </TouchableOpacity>
             </View>
+            
             <Modal
                 open={open}
-                title={''}
                 me
+                title={`Estas seguro de su eleccion`} 
                 onConfirm={onConfirm}
                 onCancel={onCancel} />
         </View>
@@ -153,11 +146,12 @@ const styles = StyleSheet.create({
     picker: {
         height: 50,
         width: 150,
-        borderRadius: 8,
+        borderRadius: 10,
     },
     header: {
         marginBottom: 16,
         alignItems: 'center',
+        paddingTop: 20
     },
     title: {
         fontSize: 24,
@@ -177,9 +171,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
         color: '#6597B2',
+        paddingBottom: '16px'
     },
     optionsContainer: {
-        marginTop: 8,
+        marginTop: 10,
         flexFlow: 'row wrap',
         justifyContent: 'space-between',
         gap: 16
@@ -190,31 +185,43 @@ const styles = StyleSheet.create({
         minWidth: '30%',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderColor: '#A9AAAE',
-        borderRadius: 8,
+        borderRadius: 10,
     },
     optionText: {
-        color: '#949599'
+        //color: '#949599',
+        color: '#0F0F0F',
+        paddingTop: '5px',
+        textAlign: 'center',
+        paddingBottom: '3px'
     },
     selectedOption: {
+        borderColor: '#3E7DA0'
+    },
+    selectedOptionCandidate: {
         borderColor: '#3E7DA0',
+        backgroundColor: 'rgba(62,125,160,0.25)',
+        borderWidth: 3,
+        color: '#000000'
     },
     image: {
         width: 84,
         height: 84,
         borderRadius: 8,
+        marginTop: '5px'
     },
     button: {
         marginTop: 16,
         paddingVertical: 12,
         borderRadius: 4,
-        backgroundColor: '#F0E454',
+        backgroundColor: '#3E7DA0',
         alignItems: 'center',
     },
     buttonText: {
         color: 'white',
         fontWeight: '500',
+        fontSize:'16px'
     },
 });
 

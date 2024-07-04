@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#3E7DA0',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '700',
   },
   modalContainer: {
     flex: 1,

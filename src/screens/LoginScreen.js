@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -13,6 +13,7 @@ const LoginScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.textContainer}>
+                <Image source={require('../../assets/login.jpg')} style={styles.images} />
                 <Text style={styles.title}>Login</Text>
                 <Text style={styles.subtitle}>Ingresa tus credenciales para acceder a tu cuenta.</Text>
             </View>
@@ -70,9 +71,10 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#3E7DA0',
+        paddingTop:'15px'
     },
     subtitle: {
-        color: '#949599',
+        color: '#949599'
     },
     form: {
         marginTop: 32,
@@ -98,13 +100,14 @@ const styles = StyleSheet.create({
         marginTop: 16,
         paddingVertical: 12,
         borderRadius: 4,
-        backgroundColor: '#F0E454',
+        backgroundColor: '#3E7DA0',
         alignItems: 'center',
     },
     buttonText: {
         color: 'white',
         fontWeight: '500',
-    },
+        fontSize: '16px'
+    }
 });
 
 export default LoginScreen;
