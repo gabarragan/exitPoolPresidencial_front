@@ -8,6 +8,7 @@ const SurveyScreen = ({ navigation }) => {
     const [serviceRating, setServiceRating] = useState(0);
     const [listState, setListState] = useState([]);
     const [listVotingCenter, setListVotingCenter] = useState([]);
+    const [listStateVotingCenter, setListStateVotingCenter] = useState([]);
     const [candidates, setCandidates] = useState([]);
     const [selectedState, setSelectedState] = useState('0');
     const [selectedVotingCenter, setSelectedVotingCenter] = useState('0');
@@ -15,6 +16,12 @@ const SurveyScreen = ({ navigation }) => {
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
+    const handleStateChange = (itemValue) => {
+        setSelectedState(itemValue);
+        const filteredVotingCenter = listVotingCenter.filter(votingCenter => votingCenter.idState == itemValue);
+        console.log("itemValue", itemValue, "filteredVotingCenter", filteredVotingCenter, "listVotingCenter", listVotingCenter);
+        setListStateVotingCenter(filteredVotingCenter);
+    }
 
     useEffect(() => {
         api.get({ url: '/listStateVotingCenter' }).then((response) => {
@@ -66,7 +73,7 @@ const SurveyScreen = ({ navigation }) => {
                             styles.picker,
                             selectedState !== 0 && styles.selectedOption
                         ]}
-                        onValueChange={(itemValue) => setSelectedState(itemValue)}
+                        onValueChange={handleStateChange}
                     >
                         <Picker.Item label="Estado" value="0" />
                         {listState.map(({ idState, state_name }) => (
@@ -82,7 +89,7 @@ const SurveyScreen = ({ navigation }) => {
                         onValueChange={(itemValue) => setSelectedVotingCenter(itemValue)}
                     >
                         <Picker.Item label="Centro de votación" value="0" />
-                        {listVotingCenter.map(({ idVotingCenter, voting_center_name }) => (
+                        {listStateVotingCenter.map(({ idVotingCenter, voting_center_name }) => (
                             <Picker.Item key={idVotingCenter} label={voting_center_name} value={idVotingCenter} />
                         ))}
                     </Picker>

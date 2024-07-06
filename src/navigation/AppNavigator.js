@@ -12,7 +12,13 @@ const AppNavigator = () => {
         <NavigationContainer>
             <Stack.Navigator 
             screenOptions={ { 
-                headerShown: false,
+                headerShown: true,
+                headerStyle: { backgroundColor: '#FF5F6B' },
+                headerTintColor: '#fff',
+                headerTitleStyle: { fontWeight: 'bold' },
+                headerTitle: "Survey App",
+                footerStyle: { backgroundColor: '#FF5F6B' },
+                footerShown: true,
             }}
             initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} />
