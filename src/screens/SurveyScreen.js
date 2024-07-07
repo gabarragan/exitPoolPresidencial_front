@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
 import API from '../utils/api';
 import Modal from '../components/Modal';
+import Alert from '../components/Alert';
 
 const SurveyScreen = ({ navigation }) => {
     const api = new API({});
@@ -46,7 +47,7 @@ const SurveyScreen = ({ navigation }) => {
         const response = await api.post({
             url: '/registreVote', data: {
                 "idCandidate": serviceRating,
-                "nroVote": "1",
+                "nroVote": 1,
                 "idState": selectedState,
                 "idVotingCenter": selectedVotingCenter
             }
@@ -60,8 +61,16 @@ const SurveyScreen = ({ navigation }) => {
 
     const submitSurvey = () => {
         //TODO: Validaciones
-        setOpen(true);
+        if(selectedState == 0 || selectedVotingCenter == 0){
+            <Alert
+                message = 'Debe de seleccionar Centro de Votacion o Estado ' 
+            />
+        }else {
+            setOpen(true);
+        }
+        
     };
+
 
     return (
         <View style={styles.container}>
@@ -129,7 +138,7 @@ const SurveyScreen = ({ navigation }) => {
             <Modal
                 open={open}
                 me
-                title={`Estas seguro de su eleccion`} 
+                title='Estas seguro de su eleccion '  
                 onConfirm={onConfirm}
                 onCancel={onCancel} />
         </View>
