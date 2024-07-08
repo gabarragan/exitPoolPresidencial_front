@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }) => {
         });
         console.log('--' + response)*/
 
-        navigation.replace('Survey');
+        navigation.replace('Results');
     };
 
     return (
