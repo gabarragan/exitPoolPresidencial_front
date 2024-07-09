@@ -5,12 +5,12 @@ import { BarChart } from 'react-native-chart-kit';
 const BarChartExample = ({ data }) => {
 
   const chartConfig = {
-    backgroundColor: '#e26a00',
-    backgroundGradientFrom: '#fb8c00',
-    backgroundGradientTo: '#ffa726',
+    backgroundColor: '#ffffff',
+    backgroundGradientFrom: '#ffffff',
+    backgroundGradientTo: '#ffffff',
     decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 16,
     },
@@ -22,18 +22,18 @@ const BarChartExample = ({ data }) => {
   };
 
   return (
-    <View style={styles.container}>
       <BarChart
         style={styles.chart}
         data={data}
-        width={Dimensions.get('window').width - 32}
+        width={Dimensions.get('window').width / 2 - 32}
         height={300}
         yAxisSuffix="%"
         chartConfig={chartConfig}
         verticalLabelRotation={15}
+        fromZero={true}
+        withCustomBarColorFromData={true}
       />
-    </View>
-  );
+    )
 };
 
 const styles = StyleSheet.create({
@@ -44,8 +44,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   chart: {
-    marginVertical: 8,
+    margin: 0,
     borderRadius: 0,
+    width: 'fit-content',
   },
 });
 

@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import API from '../utils/api';
-import { SafeAreaView } from 'react-native';
 
 import BarChartExample from '../components/BarCharExample';
 
 const ResultsScreen = () => {
-    const [data, setData] = useState( {
-        labels: ["January", "February", "March", "April", "May", "June"],
+    const [data, setData] = useState({
+        labels: [],
         datasets: [
-          {
-            data: [-50, -20, -2, 86, 71, 100],
-            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`
-          },
-          {
-            data: [20, 10, 4, 56, 87, 90],
-            color: (opacity = 1) => `rgba(0, 255, 255, ${opacity})`
-          },
-          {
-            data: [30, 90, 67, 54, 10, 2]
-          }
+            {
+                data: [],
+                colors: [],
+            }
         ],
-        legend: ["Rainy Days", "Sunny Days", "Snowy Days"] 
-      });
+        legend: []
+    });
     const api = new API({});
 
     useEffect(() => {
@@ -30,8 +22,8 @@ const ResultsScreen = () => {
             .then(response => {
                 const labels = response.data.map((item) => item.name);
                 const data = response.data.map((item) => item.percentage);
-                console.log(response.data, { labels, datasets: [{ data }] });
-                setData({ labels, datasets: [{ data }] });
+                const colors = response.data.map((item) => ((opacity = 1) => (`rgba(${item.rgb},${opacity})`)));
+                setData({ labels, datasets: [{ data, colors, }] });
             }).catch(error => {
                 setData({ labels: [], datasets: [{ data: [] }] });
                 console.error(error);
@@ -40,8 +32,17 @@ const ResultsScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Results</Text>
-            <BarChartExample data={data} />
+            <ScrollView>
+                <Text style={styles.title}>Resultado de Votaciones</Text>
+                <View>
+
+                </View>
+                <View style={styles.chartsContainer}>
+                    <BarChartExample data={data} />
+                    <BarChartExample data={data} />
+                    <BarChartExample data={data} />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -57,6 +58,13 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         textAlign: 'center',
     },
+    chartsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+        padding: 16,
+    }
 });
 
 export default ResultsScreen;
