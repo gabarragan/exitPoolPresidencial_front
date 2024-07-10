@@ -32,7 +32,7 @@ const ResultsScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
+            <ScrollView style={{width: '100%', height: 'calc(100vh - 60px)', overflowY: 'scroll'}}>
                 <Text style={styles.title}>Resultado de Votaciones</Text>
                 <View>
 
