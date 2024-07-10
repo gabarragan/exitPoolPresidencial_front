@@ -14,6 +14,7 @@ const SurveyScreen = ({ navigation }) => {
     const [selectedState, setSelectedState] = useState('0');
     const [selectedVotingCenter, setSelectedVotingCenter] = useState('0');
     const [open, setOpen] = useState(false);
+    const [visible, setVisible] = useState(false);
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
@@ -62,7 +63,10 @@ const SurveyScreen = ({ navigation }) => {
     const submitSurvey = () => {
         //TODO: Validaciones
         if(selectedState == 0 || selectedVotingCenter == 0){
+            setVisible(true);
             <Alert
+                title={'Error'}
+                visible={visible}
                 message = 'Debe de seleccionar Centro de Votacion o Estado ' 
             />
         }else {

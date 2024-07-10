@@ -1,25 +1,40 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import API from '../utils/api';
-
+import Alert from '../components/Alert';
 
 const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [visible, setVisible] = useState(false);
+
     const api = new API({});
 
     const handleLogin = async () => {
-        // Validación de usuario
-        console.log(username + ' ' + password)
-        /*const response = await api.post({
-            url: '/login', data: {
-                "userName": username,
-                "userPassword": password
-            }
-        });
-        console.log('--' + response)*/
+        try {
+             // Validación de usuario
+            console.log(username + ' ' + password)
+            const response = await api.post({
+                url: '/login', data: {
+                    "userName": username,
+                    "userPassword": password
+                }
+            });
+            console.log(response.data)
+            navigation.replace('Survey');
 
-        navigation.replace('Survey');
+        } catch (error) {
+            setVisible(true);
+            <Alert
+                title={'Error'}
+                visible={visible}
+                message = 'Debe de seleccionar Centro de Votacion o Estado ' 
+            />
+            navigation.replace('Login');
+        }
+       
+
+        
     };
 
     return (
