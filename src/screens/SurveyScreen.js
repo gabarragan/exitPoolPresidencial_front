@@ -67,7 +67,7 @@ const SurveyScreen = ({ navigation }) => {
             <Alert
                 title={'Error'}
                 visible={visible}
-                message = 'Debe de seleccionar Centro de Votacion o Estado ' 
+                message = 'Debe de seleccionar Centro de Votación o Estado ' 
             />
         }else {
             setOpen(true);
@@ -142,7 +142,7 @@ const SurveyScreen = ({ navigation }) => {
             <Modal
                 open={open}
                 me
-                title='Estas seguro de su eleccion '  
+                title='¿Estás seguro de su elección? '  
                 onConfirm={onConfirm}
                 onCancel={onCancel} />
         </View>
