@@ -2,218 +2,67 @@ import React from 'react';
 import { View, Dimensions, StyleSheet, Text } from 'react-native';
 import { BarChart, ruleTypes } from "react-native-gifted-charts";
 
-const BarChartExample = ({ }) => {
-  const data = [
-    {
-      value: 2500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Jan',
-    },
-    { value: 2400, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Feb',
-    },
-    { value: 3000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 4500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Mar',
-    },
-    { value: 4000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 5200,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Apr',
-    },
-    { value: 4900, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3000,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'May',
-    },
-    { value: 2800, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 2500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Jan',
-    },
-    { value: 2400, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Feb',
-    },
-    { value: 3000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 4500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Mar',
-    },
-    { value: 4000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 5200,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Apr',
-    },
-    { value: 4900, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3000,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'May',
-    },
-    { value: 2800, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 2500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Jan',
-    },
-    { value: 2400, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Feb',
-    },
-    { value: 3000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 4500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Mar',
-    },
-    { value: 4000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 5200,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Apr',
-    },
-    { value: 4900, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3000,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'May',
-    },
-    { value: 2800, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 2500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Jan',
-    },
-    { value: 2400, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Feb',
-    },
-    { value: 3000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 4500,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Mar',
-    },
-    { value: 4000, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 5200,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'Apr',
-    },
-    { value: 4900, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-
-    {
-      value: 3000,
-      frontColor: '#006DFF',
-      gradientColor: '#009FFF',
-      spacing: 6,
-      label: 'May',
-    },
-    { value: 2800, frontColor: '#3BE9DE', gradientColor: '#93FCF8' },
-  ];
+const BarChartExample = ({
+  title,
+  data,
+  maxValue = 100,
+  stepValue = 10,
+  yAxisLabelTexts = ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+  width = '100%',
+  spacing,
+  initialSpacing,
+  barWidth,
+  labelWidth
+}) => {
 
   return (
     <View
       style={{
-        margin: 10,
+        margin: 8,
         padding: 16,
         borderRadius: 0,
         backgroundColor: '#fff',
+        width: width,
       }}>
       <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>
-        Overview
+        {title}
       </Text>
-      <View style={{ padding: 20, alignItems: 'center' }}>
+      <View style={{ padding: 8, alignItems: 'center', width: '100%' }}>
         <BarChart
           data={data}
-          barWidth={16}
-          initialSpacing={10}
-          spacing={14}
+          barWidth={barWidth}
+          initialSpacing={initialSpacing}
+          spacing={spacing}
           barBorderRadius={2}
           showGradient
+          xAxisThickness={0}
           yAxisThickness={0}
           xAxisType={ruleTypes.DASHED}
           xAxisColor={'darkgray'}
           yAxisTextStyle={{ color: 'darkgray' }}
-          stepValue={1000}
-          maxValue={6000}
-          noOfSections={6}
-          yAxisLabelTexts={['0', '1k', '2k', '3k', '4k', '5k', '6k']}
-          labelWidth={40}
-          xAxisLabelTextStyle={{ color: 'darkgray', textAlign: 'center' }}          
+          stepValue={stepValue}
+          maxValue={maxValue}
+          noOfSections={yAxisLabelTexts.length - 1}
+          yAxisLabelTexts={yAxisLabelTexts}
+          showValuesAsTopLabel={true}
+          xAxisLabelTextStyle={{ color: 'darkgray', textAlign: 'center' }}
+          labelWidth={labelWidth}
+          renderTooltip={(item, index) => {
+            return (
+              <View
+                style={{
+                  marginBottom: 5,
+                  marginLeft: -6,
+                  backgroundColor: '#ffcefe',
+                  paddingHorizontal: 6,
+                  paddingVertical: 4,
+                  borderRadius: 4,
+                  zIndex: 2000
+                }}>
+                <Text>{item.name}</Text>
+              </View>
+            );
+          }}
         />
       </View>
     </View>
