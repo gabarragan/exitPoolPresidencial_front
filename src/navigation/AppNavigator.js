@@ -4,6 +4,7 @@ import React from 'react';
 import LoginScreen from '../screens/LoginScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import SurveyScreen from '../screens/SurveyScreen';
+import ChangePassword from '../screens/ChangePassword';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ const AppNavigator = () => {
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Survey" component={SurveyScreen} />
                 <Stack.Screen name="Results" component={ResultsScreen} />
+                <Stack.Screen name="changePassword" component={ChangePassword} />
             </Stack.Navigator>
         </NavigationContainer>
     );

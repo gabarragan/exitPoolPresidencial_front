@@ -1,35 +1,39 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import API from '../utils/api';
+import Alert from '../components/Alert';
 
 const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [visible, setVisible] = useState(false);
 
     const api = new API({});
     
-    const handleChangePassword = async () => {
-        navigation.replace('changePassword');
-    }
     const handleLogin = async () => {
         try {
              // Validación de usuario
-            console.log(username + ' ' + password)
-            const response = await api.post({
-                url: '/login', data: {
-                    "userName": username,
-                    "userPassword": password
+            console.log(username + ' ' + oldPassword + ' ' + newPassword)
+            const response = await api.put({
+                url: '/updatePassword', data: {
+                    "email": username,
+                    "oldPassword": oldPassword,
+                    "newPassword": newPassword
                 }
             });
             console.log(response.data)
-            console.log('-----> GOOD')
-            navigation.replace('Survey');
+
+            navigation.replace('Login');
 
         } catch (error) {
             console.log('-----> error')
             setVisible(true);
-            navigation.replace('Login');
+            <Alert
+                title={'Error'}
+                visible={visible}
+                message = 'Debe de seleccionar Centro de Votacion o Estado ' 
+            />
         }
        
     };
@@ -37,9 +41,8 @@ const LoginScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.textContainer}>
-                <Image source={require('../../assets/login.jpg')} style={styles.images} />
-                <Text style={styles.title}>Login</Text>
-                <Text style={styles.subtitle}>Ingresa tus credenciales para acceder a tu cuenta.</Text>
+                <Text style={styles.title}>Cambiar Contraseña</Text>
+                <Text style={styles.subtitle}>Ingresa tus credenciales para cambiar la contraseña.</Text>
             </View>
             <View style={styles.form}>
                 <View style={styles.formGroup}>
@@ -57,32 +60,41 @@ const LoginScreen = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.formGroup}>
-                    <Text style={styles.label}>Contraseña</Text>
+                    <Text style={styles.label}>Contraseña Anterior</Text>
                     <TextInput
-                        id="password"
-                        name="password"
-                        value={password}
-                        onChangeText={setPassword}
+                        id="oldPassword"
+                        name="oldPassword"
+                        value={oldPassword}
+                        onChangeText={setOldPassword}
                         secureTextEntry
                         autoCompleteType="password"
                         required
                         style={styles.input}
-                        placeholder="Ingresa tu contraseña"
+                        placeholder="Ingresa tu contraseña anterior"
+                    />
+                </View>
+                <View style={styles.formGroup}>
+                    <Text style={styles.label}>Contraseña Nueva</Text>
+                    <TextInput
+                        id="newPassword"
+                        name="newPassword"
+                        value={newPassword}
+                        onChangeText={setNewPassword}
+                        secureTextEntry
+                        autoCompleteType="password"
+                        required
+                        style={styles.input}
+                        placeholder="Ingresa tu contraseña nueva"
                     />
                 </View>
                 <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>Iniciar sesión</Text>
+                    <Text style={styles.buttonText}>Cambiar Contraseña</Text>
                 </TouchableOpacity>
-                
-                <View>
-                    <Text style={styles.labelChangePassword} onPress={handleChangePassword}>Cambiar contraseña</Text>
-                    { visible ? (
+                {this.visible ?
+                    <View>
                         <Text style={styles.labelError}>Correo electrónico o contraseña Invalida</Text>
-                    ):null }
-
-                    
-                </View>
-                
+                    </View>: null
+                }
                 
             </View>
         </View>
@@ -126,13 +138,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
         color: '#FF0000',
-        textAlign: 'center',
-        marginTop: '16px'
-    },
-    labelChangePassword: {
-        fontSize: 14,
-        fontWeight: '500',
-        color: '#6597B2',
         textAlign: 'center',
         marginTop: '16px'
     },

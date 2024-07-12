@@ -14,6 +14,7 @@ const SurveyScreen = ({ navigation }) => {
     const [selectedState, setSelectedState] = useState('0');
     const [selectedVotingCenter, setSelectedVotingCenter] = useState('0');
     const [open, setOpen] = useState(false);
+    const [visible, setVisible] = useState(false);
     const handleServiceRatingChange = (value) => {
         setServiceRating(value);
     };
@@ -62,8 +63,11 @@ const SurveyScreen = ({ navigation }) => {
     const submitSurvey = () => {
         //TODO: Validaciones
         if(selectedState == 0 || selectedVotingCenter == 0){
+            setVisible(true);
             <Alert
-                message = 'Debe de seleccionar Centro de Votacion o Estado ' 
+                title={'Error'}
+                visible={visible}
+                message = 'Debe de seleccionar Centro de Votación o Estado ' 
             />
         }else {
             setOpen(true);
@@ -138,7 +142,7 @@ const SurveyScreen = ({ navigation }) => {
             <Modal
                 open={open}
                 me
-                title='Estas seguro de su eleccion '  
+                title='¿Estás seguro de su elección? '  
                 onConfirm={onConfirm}
                 onCancel={onCancel} />
         </View>
